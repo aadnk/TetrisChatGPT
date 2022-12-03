@@ -53,20 +53,33 @@
 
         // Move the tetromino down one block
         function move() {
+            // Move the tetromino down one block
             position.y++;
+
+            // Check if the tetromino is colliding with the floor or another block on the board
+            if (checkCollision()) {
+                // If the tetromino is colliding, undo the y position increment
+                position.y--;
+
+                // Place the tetromino on the board
+                for (var r = 0; r < tetromino.length; r++) {
+                    for (var c = 0; c < tetromino.length; c++) {
+                        if (tetromino[r][c]) {
+                            board[position.y + r][position.x + c] = tetromino[r][c];
+                        }
+                    }
+                }
+
+                // Reset the position to the top of the board and generate a new random starting position
+                position.y = -2;
+                position.x = Math.floor(Math.random() * 8);
+            }
         }
 
         // Update the board and draw the current state
         function update() {
             // Move the tetromino down one block
             move();
-
-            // If the tetromino has reached the bottom of the board or collided with another block,
-            // reset the position to the top of the board and generate a new random starting position
-            if (checkCollision()) {
-                position.y = -2;
-                position.x = Math.floor(Math.random() * 8);
-            }
 
             // Clear the canvas and redraw the board with the updated tetromino position
             ctx.clearRect(0, 0, canvas.width, canvas.height);
