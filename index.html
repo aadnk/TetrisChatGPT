@@ -10,8 +10,16 @@
 </head>
 <body>
     <h1>Tetris</h1>
+    <div>Level: <span id="level">1</span></div>
     <div>Score: <span id="score">0</span></div>
+    <div>Cleared Rows: <span id="totalClearedRows">0</span></div>
+
     <canvas id="canvas"></canvas>
+
+    <div>
+        <h2>Debug</h2>
+        <button onclick="handleClearedRows(1)">Increment Cleared Row</button>       
+    </div>
 
     <script>
         // Initialize the canvas and set the dimensions to 10 blocks wide and 20 blocks tall
@@ -88,6 +96,7 @@
         var highscore = 0;
         var gameTimeout = null;
         var isDropping = false;
+        var totalClearedRows = 0;
 
         // The current tetromino
         var tetromino = [];
@@ -164,12 +173,18 @@
                     }
                 }
                 let clearedRows = clearFilledRows();
-                updateHighscore(clearedRows);
+                handleClearedRows(clearedRows);
 
                 // Generate a new random tetromino
                 newTetromino();
             }
             return true;
+        }
+
+        function handleClearedRows(clearedRows) {
+            updateHighscore(clearedRows);
+
+            incrementClearedRows(clearedRows);
         }
 
         // Clear all filled rows on the board
@@ -182,23 +197,23 @@
                 // Check if the current row is filled
                 var isFilled = true;
                 for (var c = 0; c < board[r].length; c++) {
-                if (board[r][c] == 0) {
-                    // If there is an empty space in the current row, it is not filled
-                    isFilled = false;
-                    break;
-                }
+                    if (board[r][c] == 0) {
+                        // If there is an empty space in the current row, it is not filled
+                        isFilled = false;
+                        break;
+                    }
                 }
 
                 // If the current row is filled, remove it and increment the cleared rows counter
                 if (isFilled) {
-                // Remove the current row by shifting all rows above it one row down
-                for (var i = r; i > 0; i--) {
-                    board[i] = board[i - 1];
-                }
-                // Add a new empty row at the top of the board
-                board[0] = new Array(board[0].length);
-                // Increment the cleared rows counter
-                clearedRows++;
+                    // Remove the current row by shifting all rows above it one row down
+                    for (var i = r; i > 0; i--) {
+                        board[i] = board[i - 1];
+                    }
+                    // Add a new empty row at the top of the board
+                    board[0] = new Array(board[0].length);
+                    // Increment the cleared rows counter
+                    clearedRows++;
                 }
             }
 
@@ -211,17 +226,17 @@
             var points = 0;
             switch (clearedRows) {
                 case 1:
-                points = 40 * level;
-                break;
+                    points = 40 * level;
+                    break;
                 case 2:
-                points = 80 * level;
-                break;
+                    points = 80 * level;
+                    break;
                 case 3:
-                points = 120 * level;
-                break;
+                    points = 120 * level;
+                    break;
                 case 4:
-                points = 400 * level;
-                break;
+                    points = 400 * level;
+                    break;
             }
 
             // Update the highscore
@@ -247,8 +262,8 @@
             for (var r = 0; r < tetromino.length; r++) {
                 // Loop through the columns of the tetromino array
                 for (var c = 0; c < tetromino[r].length; c++) {
-                // Rotate the tetromino clockwise by copying the columns of the tetromino array to the rows of the new tetromino array
-                newTetromino[c][tetromino.length - 1 - r] = tetromino[r][c];
+                    // Rotate the tetromino clockwise by copying the columns of the tetromino array to the rows of the new tetromino array
+                    newTetromino[c][tetromino.length - 1 - r] = tetromino[r][c];
                 }
             }
 
@@ -266,8 +281,7 @@
 
         // Update the game state
         function update() {
-            // Use an interval of 10 milliseconds if the isDropping variable is true, and an interval of 1000 milliseconds if it is false
-            var interval = isDropping ? 20 : 500;
+            var interval = isDropping ? 20 : getLevelSpeed();
 
             // Move the tetromino down one block
             if (!move()) {
@@ -306,10 +320,45 @@
             return false;
         }
 
+        // Increment the number of cleared rows and update the level if needed
+        function incrementClearedRows(clearedRows) {
+            // Increment the total number of cleared rows in a loop
+            for (var i = 0; i < clearedRows; i++) {
+                totalClearedRows++;
+
+                // Check if the level should be incremented (every 5 cleared rows)
+                if (totalClearedRows % 5 == 0) {
+                    level++;
+                }
+            }
+
+            // Get the level span from the document and set its text content to be equal to the level variable
+            var levelSpan = document.getElementById("level");
+            levelSpan.textContent = level;
+
+            // Get the total cleared rows span from the document and set its text content to be equal to the totalClearedRows variable
+            var totalClearedRowsSpan = document.getElementById("totalClearedRows");
+            totalClearedRowsSpan.textContent = totalClearedRows;
+        }
+
+        // Get the current level speed (the number of milliseconds between each time a tetromino is moved down)
+        function getLevelSpeed() {
+            // Start with the base speed of 1000 ms
+            var speed = 1000;
+
+            // Decrease the speed by 30% for each level above 1
+            for (var i = 1; i < level; i++) {
+                speed *= 0.9;
+            }
+
+            // Return the speed, clamped to a minimum of 10 ms
+            return Math.max(speed, 10);
+        }
+
         // Handle keyboard input
         function keyboardHandler(event) {
-            // Check if the Z key was pressed
-            if (event.keyCode == 90) {
+            // Check if the Z key or up arrow was pressed
+            if (event.keyCode == 90 || event.keyCode == 38) {
                 // Rotate the tetromino counter-clockwise
                 rotateCounterClockwise();
 
