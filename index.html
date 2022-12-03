@@ -134,6 +134,12 @@
                 // If the tetromino is colliding, undo the y position increment
                 position.y--;
 
+                // If the tetromino is colliding with the top of the board, end the game
+                if (position.y < 0) {
+                    alert("Game over!");
+                    return false;
+                }
+
                 // Place the tetromino on the board
                 for (var r = 0; r < tetromino.length; r++) {
                     for (var c = 0; c < tetromino.length; c++) {
@@ -146,19 +152,23 @@
                 // Generate a new random tetromino
                 newTetromino();
             }
+            return true;
         }
 
         // Update the board and draw the current state
         function update() {
             // Move the tetromino down one block
-            move();
+            if (!move()) {
+                // If the move() function returns false, the game has ended, so exit the update() function
+                return;
+            }
 
             // Clear the canvas and redraw the board with the updated tetromino position
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             draw();
 
             // Call the update function again after 1000ms (1 second)
-            setTimeout(update, 100);
+            setTimeout(update, 10);
         }
 
         // Check if the tetromino is colliding with the floor or another block on the board
