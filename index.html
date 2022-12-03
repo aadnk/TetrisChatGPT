@@ -93,6 +93,8 @@
 
         // Draw the tetromino and the board
         function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
             // Draw the tetromino
             for (var r = 0; r < tetromino.length; r++) {
                 for (var c = 0; c < tetromino.length; c++) {
@@ -164,11 +166,10 @@
             }
 
             // Clear the canvas and redraw the board with the updated tetromino position
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
             draw();
 
             // Call the update function again after 1000ms (1 second)
-            setTimeout(update, 10);
+            setTimeout(update, 1000);
         }
 
         // Check if the tetromino is colliding with the floor or another block on the board
@@ -192,6 +193,33 @@
             }
             return false;
         }
+
+        // Handle keyboard input
+        function keyboardHandler(event) {
+            // Check if the left or right arrow button is pressed
+            if (event.keyCode === 37) {
+                // If the left arrow button is pressed, move the tetromino one block to the left
+                position.x--;
+
+                if (checkCollision()) {
+                    // If the tetromino is colliding with the wall or another block on the board, undo the x position decrement
+                    position.x++;
+                }
+            } else if (event.keyCode === 39) {
+                // If the right arrow button is pressed, move the tetromino one block to the right
+                position.x++;
+
+                if (checkCollision()) {
+                    // If the tetromino is colliding with the wall or another block on the board, undo the x position increment
+                    position.x--;
+                }
+            }
+
+            // Draw the board and tetromino
+            draw();
+        }
+
+        document.addEventListener("keydown", keyboardHandler);
 
         // Start the game
         update();
