@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tetris</title>
+    <style>
+        #canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tetris</h1>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        // Initialize the canvas and set the dimensions to 10 blocks wide and 20 blocks tall
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        canvas.width = 10 * 30; // 30px wide blocks
+        canvas.height = 20 * 30; // 30px tall blocks
+
+        // Create the tetris board as a 2D array of rows and columns
+        var board = [];
+
+        for (var r = 0; r < 20; r++) {
+            board[r] = [];
+
+            for (var c = 0; c < 10; c++) {
+                board[r][c] = 0;
+            }
+        }
+
+        // Define the 2x2 Square tetromino
+        var tetromino = [
+            [1, 1],
+            [1, 1]
+        ];
+
+        // Create a random starting position for the tetromino
+        var position = {x: Math.floor(Math.random() * 8), y: -2};
+
+        // Draw the tetromino at its current position on the board
+        function draw() {
+            for (var r = 0; r < tetromino.length; r++) {
+                for (var c = 0; c < tetromino.length; c++) {
+                    if (tetromino[r][c]) {
+                        ctx.fillStyle = "red";
+                        ctx.fillRect((position.x + c) * 30, (position.y + r) * 30, 30, 30);
+                    }
+                }
+            }
+        }
+
+        // Move the tetromino down one block
+        function move() {
+            position.y++;
+        }
+
+        // Update the board and draw the current state
+        function update() {
+            // Move the tetromino down one block
+            move();
+
+            // If the tetromino has reached the bottom of the board or collided with another block,
+            // reset the position to the top of the board and generate a new random starting position
+            if (checkCollision()) {
+                position.y = -2;
+                position.x = Math.floor(Math.random() * 8);
+            }
+
+            // Clear the canvas and redraw the board with the updated tetromino position
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            draw();
+
+            // Call the update function again after 1000ms (1 second)
+            setTimeout(update, 1000);
+        }
+
+        // Check if the tetromino is colliding with another block on the board
+        function checkCollision() {
+            for (var r = 0; r < tetromino.length; r++) {
+                for (var c = 0; c < tetromino.length; c++) {
+                    // Check if the current tetromino block is within the bounds of the board
+                    if (position.y + r < 0) {
+                        continue;
+                    }
+                    if (position.y + r >= 20 || position.x + c < 0 || position.x + c >= 10) {
+                        return true;
+                    }
+
+                    // Check if the corresponding cell on the board contains a block
+                    if (tetromino[r][c] && board[position.y + r][position.x + c]) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        // Start the game
+        update();
+    </script>
+</html>
