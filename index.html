@@ -167,6 +167,38 @@
             return true;
         }
 
+        // Rotate the current tetromino clockwise
+        function rotateClockwise() {
+            // Create a new empty array of the same size as the tetromino array
+            var newTetromino = new Array(tetromino.length);
+
+            // Loop through the rows of the tetromino array
+            for (var r = 0; r < tetromino.length; r++) {
+                // Create a new empty array for the current row of the new tetromino array
+                newTetromino[r] = new Array(tetromino[r].length);
+            }
+
+            // Loop through the rows of the tetromino array
+            for (var r = 0; r < tetromino.length; r++) {
+                // Loop through the columns of the tetromino array
+                for (var c = 0; c < tetromino[r].length; c++) {
+                // Rotate the tetromino clockwise by copying the columns of the tetromino array to the rows of the new tetromino array
+                newTetromino[c][tetromino.length - 1 - r] = tetromino[r][c];
+                }
+            }
+
+            // Set the tetromino array to the new rotated tetromino array
+            tetromino = newTetromino;
+        }
+
+        // Rotate the current tetromino counter-clockwise
+        function rotateCounterClockwise() {
+            // Rotate the tetromino 3 times clockwise to get the same result as rotating it counter-clockwise once
+            for (var i = 0; i < 3; i++) {
+                rotateClockwise();
+            }
+        }
+
         // Update the game state
         function update() {
             // Use an interval of 10 milliseconds if the isDropping variable is true, and an interval of 1000 milliseconds if it is false
@@ -211,8 +243,28 @@
 
         // Handle keyboard input
         function keyboardHandler(event) {
+            // Check if the Z key was pressed
+            if (event.keyCode == 90) {
+                // Rotate the tetromino counter-clockwise
+                rotateCounterClockwise();
+
+                // Check if the rotated tetromino is colliding with the wall or another block on the board
+                if (checkCollision()) {
+                    // If the rotated tetromino is colliding, rotate it back clockwise
+                    rotateClockwise();
+                }
+            // Check if the X key was pressed
+            } else if (event.keyCode == 88) {
+                // Rotate the tetromino clockwise
+                rotateClockwise();
+
+                // Check if the rotated tetromino is colliding with the wall or another block on the board
+                if (checkCollision()) {
+                    // If the rotated tetromino is colliding, rotate it back counter-clockwise
+                    rotateCounterClockwise();
+                }
             // Check if the left or right arrow button is pressed
-            if (event.keyCode === 37) {
+            } else if (event.keyCode === 37) {
                 // If the left arrow button is pressed, move the tetromino one block to the left
                 position.x--;
 
