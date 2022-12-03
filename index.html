@@ -76,22 +76,20 @@
             setTimeout(update, 1000);
         }
 
-        // Check if the tetromino is colliding with another block on the board
+        // Check if the tetromino is colliding with the floor or another block on the board
         function checkCollision() {
             for (var r = 0; r < tetromino.length; r++) {
                 for (var c = 0; c < tetromino.length; c++) {
-                    // Check if the current tetromino block is within the bounds of the board
-                    if (position.y + r < 0) {
-                        continue;
-                    }
-                    if (position.y + r >= 20 || position.x + c < 0 || position.x + c >= 10) {
-                        return true;
-                    }
+                // Check if the current tetromino block is outside the top of the board
+                if (position.y + r < 0) {
+                    continue;
+                }
 
-                    // Check if the corresponding cell on the board contains a block
-                    if (tetromino[r][c] && board[position.y + r][position.x + c]) {
-                        return true;
-                    }
+                // Check if the current tetromino block is outside the left or right sides of the board,
+                // or if the corresponding cell on the board contains a block
+                if (position.x + c < 0 || position.x + c >= 10 || tetromino[r][c] && board[position.y + r][position.x + c]) {
+                    return true;
+                }
                 }
             }
             return false;
