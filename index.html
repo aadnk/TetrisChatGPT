@@ -82,14 +82,14 @@
             ]
         ];
 
-        // Define the 2x2 Square tetromino
-        var tetromino = [
-            [1, 1],
-            [1, 1]
-        ];
+        // The current tetromino
+        var tetromino = [];
 
-        // Create a random starting position for the tetromino
+        // A random starting position for the tetromino
         var position = {x: Math.floor(Math.random() * 8), y: -2};
+
+        // Initialize the tetromino with a random tetromino shape
+        newTetromino();
 
         // Draw the tetromino and the board
         function draw() {
@@ -114,6 +114,16 @@
             }
         }
 
+        // Generate a new random tetromino
+        function newTetromino() {
+            // Reset the position to the top of the board and generate a new random starting position
+            position.y = -2;
+            position.x = Math.floor(Math.random() * 8);
+
+            // Set the initial tetromino to a random tetromino from the tetrominoes array
+            tetromino = tetrominoes[Math.floor(Math.random() * tetrominoes.length)];
+        }
+
         // Move the tetromino down one block
         function move() {
             // Move the tetromino down one block
@@ -133,9 +143,8 @@
                     }
                 }
 
-                // Reset the position to the top of the board and generate a new random starting position
-                position.y = -2;
-                position.x = Math.floor(Math.random() * 8);
+                // Generate a new random tetromino
+                newTetromino();
             }
         }
 
