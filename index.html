@@ -10,6 +10,7 @@
 </head>
 <body>
     <h1>Tetris</h1>
+    <div>Score: <span id="score">0</span></div>
     <canvas id="canvas"></canvas>
 
     <script>
@@ -82,8 +83,10 @@
             ]
         ];
 
+        // Game state
+        var level = 1;
+        var highscore = 0;
         var gameTimeout = null;
-
         var isDropping = false;
 
         // The current tetromino
@@ -160,7 +163,8 @@
                         }
                     }
                 }
-                clearFilledRows();
+                let clearedRows = clearFilledRows();
+                updateHighscore(clearedRows);
 
                 // Generate a new random tetromino
                 newTetromino();
@@ -200,6 +204,32 @@
 
             // Return the number of cleared rows
             return clearedRows;
+        }
+
+        function updateHighscore(clearedRows) {
+            // Compute the number of points to add to the highscore based on the number of cleared rows and the current level
+            var points = 0;
+            switch (clearedRows) {
+                case 1:
+                points = 40 * level;
+                break;
+                case 2:
+                points = 80 * level;
+                break;
+                case 3:
+                points = 120 * level;
+                break;
+                case 4:
+                points = 400 * level;
+                break;
+            }
+
+            // Update the highscore
+            highscore += points;
+
+            // Get the score span from the document and set its text content to be equal to the highscore variable
+            var scoreSpan = document.getElementById("score");
+            scoreSpan.textContent = highscore;
         }
 
         // Rotate the current tetromino clockwise
