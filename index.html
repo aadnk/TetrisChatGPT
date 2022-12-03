@@ -16,8 +16,10 @@
         // Initialize the canvas and set the dimensions to 10 blocks wide and 20 blocks tall
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
-        canvas.width = 10 * 30; // 30px wide blocks
-        canvas.height = 20 * 30; // 30px tall blocks
+        const BLOCK_SIZE = 30;
+
+        canvas.width = 10 * BLOCK_SIZE; // 30px wide blocks
+        canvas.height = 20 * BLOCK_SIZE; // 30px tall blocks
 
         // Create the tetris board as a 2D array of rows and columns
         var board = [];
@@ -30,6 +32,56 @@
             }
         }
 
+        const tetrominoes = [  // I-shaped tetromino  
+            [    
+                [0, 'cyan', 0, 0],
+                [0, 'cyan', 0, 0],
+                [0, 'cyan', 0, 0],
+                [0, 'cyan', 0, 0]
+            ],
+
+            // O-shaped tetromino
+            [    
+                ['yellow', 'yellow'],
+                ['yellow', 'yellow']
+            ],
+
+            // T-shaped tetromino
+            [   
+                [0, 'purple', 0],
+                ['purple', 'purple', 'purple'],
+                [0, 0, 0]
+            ],
+
+            // S-shaped tetromino
+            [   
+                [0, 'green', 'green'],
+                ['green', 'green', 0],
+                [0, 0, 0]
+            ],
+
+            // Z-shaped tetromino
+            [   
+                ['red', 'red', 0],
+                [0, 'red', 'red'],
+                [0, 0, 0]
+            ],
+
+            // J-shaped tetromino
+            [   
+                [0, 'blue', 0],
+                [0, 'blue', 0],
+                ['blue', 'blue', 0]
+            ],
+
+            // L-shaped tetromino
+            [   
+                [0, 'orange', 0],
+                [0, 'orange', 0],
+                [0, 'orange', 'orange']
+            ]
+        ];
+
         // Define the 2x2 Square tetromino
         var tetromino = [
             [1, 1],
@@ -39,13 +91,24 @@
         // Create a random starting position for the tetromino
         var position = {x: Math.floor(Math.random() * 8), y: -2};
 
-        // Draw the tetromino at its current position on the board
+        // Draw the tetromino and the board
         function draw() {
+            // Draw the tetromino
             for (var r = 0; r < tetromino.length; r++) {
                 for (var c = 0; c < tetromino.length; c++) {
                     if (tetromino[r][c]) {
-                        ctx.fillStyle = "red";
-                        ctx.fillRect((position.x + c) * 30, (position.y + r) * 30, 30, 30);
+                        ctx.fillStyle = tetromino[r][c];
+                        ctx.fillRect((position.x + c) * BLOCK_SIZE, (position.y + r) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                    }
+                }
+            }
+
+            // Draw the board
+            for (var r = 0; r < board.length; r++) {
+                for (var c = 0; c < board[r].length; c++) {
+                    if (board[r][c]) {
+                        ctx.fillStyle = board[r][c];
+                        ctx.fillRect(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     }
                 }
             }
