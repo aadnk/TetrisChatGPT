@@ -80,16 +80,16 @@
         function checkCollision() {
             for (var r = 0; r < tetromino.length; r++) {
                 for (var c = 0; c < tetromino.length; c++) {
-                // Check if the current tetromino block is outside the top of the board
-                if (position.y + r < 0) {
-                    continue;
-                }
+                    // Check if the current tetromino block is outside the top of the board
+                    if (position.y + r < 0) {
+                        continue;
+                    }
 
-                // Check if the current tetromino block is outside the left or right sides of the board,
-                // or if the corresponding cell on the board contains a block
-                if (position.x + c < 0 || position.x + c >= 10 || tetromino[r][c] && board[position.y + r][position.x + c]) {
-                    return true;
-                }
+                    // Check if the current tetromino block is outside the left or right sides of the board,
+                    // or if it is outside the bottom of the board, or if the corresponding cell on the board contains a block
+                    if (position.x + c < 0 || position.x + c >= 10 || position.y + r >= 20 || tetromino[r][c] && board[position.y + r][position.x + c]) {
+                        return true;
+                    }
                 }
             }
             return false;
