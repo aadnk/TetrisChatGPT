@@ -160,11 +160,46 @@
                         }
                     }
                 }
+                clearFilledRows();
 
                 // Generate a new random tetromino
                 newTetromino();
             }
             return true;
+        }
+
+        // Clear all filled rows on the board
+        function clearFilledRows() {
+            // Keep track of the number of cleared rows
+            var clearedRows = 0;
+
+            // Loop through the rows of the board
+            for (var r = 0; r < board.length; r++) {
+                // Check if the current row is filled
+                var isFilled = true;
+                for (var c = 0; c < board[r].length; c++) {
+                if (board[r][c] == 0) {
+                    // If there is an empty space in the current row, it is not filled
+                    isFilled = false;
+                    break;
+                }
+                }
+
+                // If the current row is filled, remove it and increment the cleared rows counter
+                if (isFilled) {
+                // Remove the current row by shifting all rows above it one row down
+                for (var i = r; i > 0; i--) {
+                    board[i] = board[i - 1];
+                }
+                // Add a new empty row at the top of the board
+                board[0] = new Array(board[0].length);
+                // Increment the cleared rows counter
+                clearedRows++;
+                }
+            }
+
+            // Return the number of cleared rows
+            return clearedRows;
         }
 
         // Rotate the current tetromino clockwise
