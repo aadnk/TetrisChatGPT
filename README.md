@@ -7,3 +7,11 @@ The full chat log with OpenGPT can be found in the docs [here](https://aadnk.git
 ## Demo
 
 You can play with the game [directly on Github Pages](https://aadnk.github.io/TetrisChatGPT).
+
+### Keyboard Controls
+
+* Left Arrow - Move the piece/tetromino to the left
+* Right Arrow - Move the tetromino to the right
+* Up Arrow/Z button - Rotate the tetromino counter clockwise
+* X button - Rotate the tetromino clockwise
+* Down Arrow - Quickly drop the tetromino
