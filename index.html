@@ -343,15 +343,10 @@
 
         // Get the current level speed (the number of milliseconds between each time a tetromino is moved down)
         function getLevelSpeed() {
-            // Start with the base speed of 1000 ms
-            var speed = 1000;
+            // Compute the speed for the current level using the exponential function
+            var speed = 1000 * Math.pow(0.9, level - 1);
 
-            // Decrease the speed by 30% for each level above 1
-            for (var i = 1; i < level; i++) {
-                speed *= 0.9;
-            }
-
-            // Return the speed, clamped to a minimum of 10 ms
+            // Return the speed as an integer, capped at 10 ms
             return Math.max(speed, 10);
         }
 
