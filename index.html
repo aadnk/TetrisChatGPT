@@ -209,7 +209,8 @@
                 // Check if the current row is filled
                 var isFilled = true;
                 for (var c = 0; c < board[r].length; c++) {
-                    if (board[r][c] == 0) {
+                    // Manual fix: Use falsy check instead of == 0
+                    if (!board[r][c]) {
                         // If there is an empty space in the current row, it is not filled
                         isFilled = false;
                         break;
@@ -314,17 +315,21 @@
         function checkCollision() {
             for (var r = 0; r < tetromino.length; r++) {
                 for (var c = 0; c < tetromino.length; c++) {
-                    // Check if the current tetromino block is outside the top of the board
-                    if (position.y + r < 0) {
-                        continue;
-                    }
                     // Skip empty spaces in the tetromino
                     if (!tetromino[r][c]) {
                         continue;
                     }
+                    // Manual fix: Check if a cell of the teromino is outside the left/right side
+                    if (position.x + c < 0 || position.x + c >= 10) {
+                        return true;
+                    }
+                    // Do not collide with blocks above the board
+                    if (position.y + r < 0) {
+                        continue;
+                    }
                     // Check if the current tetromino block is outside the left or right sides of the board,
                     // or if it is outside the bottom of the board, or if the corresponding cell on the board contains a block
-                    if (position.x + c < 0 || position.x + c >= 10 || position.y + r >= 20 || board[position.y + r][position.x + c]) {
+                    if (position.y + r >= 20 || board[position.y + r][position.x + c]) {
                         return true;
                     }
                 }
