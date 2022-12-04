@@ -6,19 +6,31 @@
         #canvas {
             border: 1px solid black;
         }
+
+        /* Center game using flexbox */
+        .gameContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
     <h1>Tetris</h1>
-    <div>Level: <span id="level">1</span></div>
-    <div>Score: <span id="score">0</span></div>
-    <div>Cleared Rows: <span id="totalClearedRows">0</span></div>
 
-    <canvas id="canvas"></canvas>
-
-    <div>
-        <h2>Debug</h2>
-        <button onclick="handleClearedRows(1)">Increment Cleared Row</button>       
+    <div class="gameContainer">
+        <div class="game">
+            <div>Level: <span id="level">1</span></div>
+            <div>Score: <span id="score">0</span></div>
+            <div>Cleared Rows: <span id="totalClearedRows">0</span></div>
+        
+            <canvas id="canvas"></canvas>
+        
+            <div>
+                <h2>Debug</h2>
+                <button onclick="handleClearedRows(1)">Increment Cleared Row</button>       
+            </div>
+        </div>
     </div>
 
     <script>
