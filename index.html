@@ -26,6 +26,14 @@
         
             <canvas id="canvas"></canvas>
         
+            <div class="buttons">
+                <button onclick="keyboardHandler({ keyCode: 37 })"><span>&#x2190;</span></button>
+                <button onclick="keyboardHandler({ keyCode: 39 })"><span>&#x2192;</span></button>
+                <button onclick="keyboardHandler({ keyCode: 40 })"><span>&#x2193;</span></button>
+                <button onclick="keyboardHandler({ keyCode: 88 })"><span>&#x21BB;</span></button>
+                <button onclick="keyboardHandler({ keyCode: 90 })"><span>&#x21BA;</span></button>
+            </div>
+
             <div>
                 <h2>Debug</h2>
                 <button onclick="handleClearedRows(1)">Increment Cleared Row</button>       
@@ -371,14 +379,7 @@
         function keyboardHandler(event) {
             // Check if the Z key or up arrow was pressed
             if (event.keyCode == 90 || event.keyCode == 38) {
-                // Rotate the tetromino counter-clockwise
-                rotateCounterClockwise();
 
-                // Check if the rotated tetromino is colliding with the wall or another block on the board
-                if (checkCollision()) {
-                    // If the rotated tetromino is colliding, rotate it back clockwise
-                    rotateClockwise();
-                }
             // Check if the X key was pressed
             } else if (event.keyCode == 88) {
                 // Rotate the tetromino clockwise
