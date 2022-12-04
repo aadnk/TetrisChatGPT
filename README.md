@@ -2,7 +2,7 @@ This is a simple Tetris game implemented in JavaScript made almost completely us
 
 The full chat log with OpenGPT can be found in the docs [here](https://aadnk.github.io/TetrisChatGPT/docs/tetris-chatgpt-session.htm).
 
-<img src="docs/images/screenshot.png"  width="239" height="620">
+[<img src="docs/images/screenshot.png"  width="239" height="620">](https://aadnk.github.io/TetrisChatGPT)
 
 ## Demo
 
