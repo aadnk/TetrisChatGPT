@@ -379,7 +379,14 @@
         function keyboardHandler(event) {
             // Check if the Z key or up arrow was pressed
             if (event.keyCode == 90 || event.keyCode == 38) {
+                // Rotate the tetromino counter-clockwise
+                rotateCounterClockwise();
 
+                // Check if the rotated tetromino is colliding with the wall or another block on the board
+                if (checkCollision()) {
+                    // If the rotated tetromino is colliding, rotate it back clockwise
+                    rotateClockwise();
+                }
             // Check if the X key was pressed
             } else if (event.keyCode == 88) {
                 // Rotate the tetromino clockwise
